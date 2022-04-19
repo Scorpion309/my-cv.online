@@ -1,0 +1,6 @@
+/venv
+.idea/
+__pycache__/
+my_cv/.env
+my_cv/db.sqlite3
+my_cv/cv/migrations/*
