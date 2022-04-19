@@ -22,6 +22,13 @@ class Positions(models.Model):
         error_messages={"unique": _("Такая должность уже сужествует в базе данных!")},
     )
 
+    def __str__(self):
+        return self.position
+
+    class Meta:
+        verbose_name = _('Position')
+        verbose_name_plural = _('Positions')
+
 
 class Skills(models.Model):
     skill = models.CharField(
@@ -31,6 +38,13 @@ class Skills(models.Model):
         help_text=_("Обязательное поле. Длина должна быть не более 32 символов!"),
         error_messages={"unique": _("Такой 'skill' уже сужествует в базе данных!")},
     )
+
+    def __str__(self):
+        return self.skill
+
+    class Meta:
+        verbose_name = _('Skill')
+        verbose_name_plural = _('Skills')
 
 
 class Languages(models.Model):
@@ -48,6 +62,13 @@ class Languages(models.Model):
         choices=LANGUAGE_LEVELS,
     )
 
+    def __str__(self):
+        return f"{self.language} {self.language_level}"
+
+    class Meta:
+        verbose_name = _('Language')
+        verbose_name_plural = _('Languages')
+
 
 class Companies(models.Model):
     company_name = models.CharField(
@@ -57,6 +78,13 @@ class Companies(models.Model):
         help_text=_("Обязательное поле. Длина должна быть не более 32 символов!"),
         error_messages={"unique": _("Такая компания уже сужествует в базе данных!")},
     )
+
+    def __str__(self):
+        return self.company_name
+
+    class Meta:
+        verbose_name = _('Company')
+        verbose_name_plural = _('Companies')
 
 
 class Countries(models.Model):
@@ -70,6 +98,10 @@ class Countries(models.Model):
 
     def __str__(self):
         return self.country_name
+
+    class Meta:
+        verbose_name = _('Country')
+        verbose_name_plural = _('Countries')
 
 
 class Cities(models.Model):
@@ -85,6 +117,10 @@ class Cities(models.Model):
     def __str__(self):
         return self.city_name
 
+    class Meta:
+        verbose_name = _('City')
+        verbose_name_plural = _('Cities')
+
 
 class Experience(models.Model):
     project_name = models.CharField(
@@ -96,9 +132,13 @@ class Experience(models.Model):
     company = models.ForeignKey(Companies, on_delete=models.CASCADE)
     city = models.ForeignKey(Cities, null=True, on_delete=models.SET_NULL)
     position = models.ForeignKey(Positions, null=True, on_delete=models.SET_NULL)
-    start_work_date = models.DateField(_('Start of work at'))
-    end_work_date = models.DateField(_('End of work at'))
-    about_project = models.TextField(_('Information'))
+
+    def __str__(self):
+        return f" '{self.project_name}', {self.company}, {self.city} - {self.position}"
+
+    class Meta:
+        verbose_name = _('Experience')
+        verbose_name_plural = _('Experience')
 
 
 class StudyPlaces(models.Model):
@@ -107,6 +147,13 @@ class StudyPlaces(models.Model):
         max_length=100,
         help_text=_("Обязательное поле. Длина должна быть не более 100 символов!"),
     )
+
+    def __str__(self):
+        return self.study_place_name
+
+    class Meta:
+        verbose_name = _('Study_place')
+        verbose_name_plural = _('Study_places')
 
 
 class Education(models.Model):
@@ -117,8 +164,13 @@ class Education(models.Model):
     )
 
     study_place = models.ForeignKey(StudyPlaces, on_delete=models.CASCADE)
-    start_study_date = models.DateField(_('Start of education at'))
-    end_study_date = models.DateField(_('End of education at'))
+
+    def __str__(self):
+        return f"{self.study_place}, '{self.course}'"
+
+    class Meta:
+        verbose_name = _('Education')
+        verbose_name_plural = _('Education')
 
 
 class Person(models.Model):
@@ -177,7 +229,17 @@ class Person(models.Model):
     )
 
     other_skills = models.ManyToManyField(Skills, blank=True, related_name='all_skills')
-    languages = models.ForeignKey(Languages, blank=True, null=True, on_delete=models.SET_NULL)
+    languages = models.ManyToManyField(Languages, blank=True)
 
     work_experience = models.ForeignKey(Experience, blank=True, null=True, on_delete=models.SET_NULL)
+    start_work_date = models.DateField(_('Start of work at'), blank=True, null=True)
+    end_work_date = models.DateField(_('End of work at'), blank=True, null=True)
+    about_project = models.TextField(_('Information'), blank=True, null=True)
+
     education = models.ForeignKey(Education, blank=True, null=True, on_delete=models.SET_NULL)
+    start_study_date = models.DateField(_('Start of education at'), blank=True, null=True)
+    end_study_date = models.DateField(_('End of education at'), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('Person')
+        verbose_name_plural = _('Persons')
