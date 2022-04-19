@@ -194,6 +194,7 @@ class Person(models.Model):
         error_messages={"unique": _("Пользователь с таким логином уже существует в нашем списке пользователей."
                                     " Пожалуйста, выберите другое имя!")},
     )
+    photo = models.ImageField(_('Photo'), null=True)
     country = models.ForeignKey(Countries, null=True, on_delete=models.SET_NULL)
     city = models.ForeignKey(Cities, null=True, on_delete=models.SET_NULL)
     email = models.EmailField(_('E-mail'))
@@ -243,3 +244,6 @@ class Person(models.Model):
     class Meta:
         verbose_name = _('Person')
         verbose_name_plural = _('Persons')
+
+    def __str__(self):
+        return self.user_name
