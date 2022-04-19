@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Person, Education, Experience, Languages, StudyPlaces, Cities, Companies, Countries, Skills, \
-    Positions
+    Positions, EducationPeriod, ExperiencePeriod
 
 
 # Register your models here.
@@ -9,6 +9,7 @@ from .models import Person, Education, Experience, Languages, StudyPlaces, Citie
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
     list_display = ('user_name', 'first_name', 'last_name', 'general_skill', 'position', 'country', 'city', 'email')
+    filter_horizontal = ('languages', 'work_experience', 'education', 'skills')
 
 
 @admin.register(Countries)
@@ -41,9 +42,19 @@ class EducationAdmin(admin.ModelAdmin):
     list_display = ('course', 'study_place')
 
 
+@admin.register(EducationPeriod)
+class EducationPeriodAdmin(admin.ModelAdmin):
+    list_display = ('education', 'start_study_date', 'end_study_date')
+
+
 @admin.register(Experience)
 class ExperienceAdmin(admin.ModelAdmin):
-    list_display = ('project_name', 'company', 'city', 'position')
+    list_display = ('project_name', 'company', 'city')
+
+
+@admin.register(ExperiencePeriod)
+class ExperiencePeriodAdmin(admin.ModelAdmin):
+    list_display = ('experience', 'start_work_date', 'end_work_date')
 
 
 @admin.register(Skills)
