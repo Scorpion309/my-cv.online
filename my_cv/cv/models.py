@@ -235,7 +235,7 @@ class Person(models.Model):
     country = models.ForeignKey(Countries, null=True, on_delete=models.SET_NULL)
     city = models.ForeignKey(Cities, null=True, on_delete=models.SET_NULL)
     email = models.EmailField(_('E-mail'))
-    telephone = models.CharField(
+    phone = models.CharField(
         _('Telephone number'),
         max_length=13,
         help_text=_(f"Обязательное поле. Длина должна быть не более 13 символов!"),
