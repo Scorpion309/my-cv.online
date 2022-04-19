@@ -1,3 +1,6 @@
+import os
+import uuid
+
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -174,6 +177,11 @@ class Education(models.Model):
 
 
 class Person(models.Model):
+
+    def get_path_to_save_photo(self, filename):
+        extension = filename.split('.')[-1]
+        return os.path.join('photos/', f'{uuid.uuid4()}.{extension}')
+
     first_name = models.CharField(
         _('First name'),
         max_length=50,
@@ -194,7 +202,7 @@ class Person(models.Model):
         error_messages={"unique": _("Пользователь с таким логином уже существует в нашем списке пользователей."
                                     " Пожалуйста, выберите другое имя!")},
     )
-    photo = models.ImageField(_('Photo'), null=True)
+    photo = models.ImageField(_('Photo'), null=True, upload_to=get_path_to_save_photo)
     country = models.ForeignKey(Countries, null=True, on_delete=models.SET_NULL)
     city = models.ForeignKey(Cities, null=True, on_delete=models.SET_NULL)
     email = models.EmailField(_('E-mail'))
