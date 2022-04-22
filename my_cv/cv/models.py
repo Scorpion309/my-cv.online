@@ -4,6 +4,7 @@ import uuid
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.conf.global_settings import MEDIA_ROOT
 
 # Create your models here.
 LANGUAGE_LEVELS = (
@@ -13,6 +14,13 @@ LANGUAGE_LEVELS = (
     ("B2", "B2"),
     ("C1", "C1"),
     ("C2", "C2"),
+)
+
+DEGREE = (
+    ("Associate", "Associate"),
+    ("Bachelor's", "Bachelor's"),
+    ("Master's", "Master's"),
+    ("Doctoral", "Doctoral"),
 )
 
 
@@ -209,7 +217,11 @@ class Person(models.Model):
 
     def get_path_to_save_photo(self, filename):
         extension = filename.split('.')[-1]
-        return os.path.join('photos/', f'{uuid.uuid4()}.{extension}')
+        return os.path.join(f'{MEDIA_ROOT}cv/photos/'.lstrip('/'), f'{uuid.uuid4()}.{extension}')
+
+    def get_path_to_save_cv(self, filename):
+        extension = filename.split('.')[-1]
+        return os.path.join(f'{MEDIA_ROOT}cv/documents/'.lstrip('/'), f'{uuid.uuid4()}.{extension}')
 
     first_name = models.CharField(
         _('First name'),
@@ -231,20 +243,45 @@ class Person(models.Model):
         error_messages={"unique": _("Пользователь с таким логином уже существует в нашем списке пользователей."
                                     " Пожалуйста, выберите другое имя!")},
     )
+
     photo = models.ImageField(_('Photo'), null=True, upload_to=get_path_to_save_photo)
     country = models.ForeignKey(Countries, null=True, on_delete=models.SET_NULL)
     city = models.ForeignKey(Cities, null=True, on_delete=models.SET_NULL)
     email = models.EmailField(_('E-mail'))
+
+    website = models.CharField(
+        _('Website'),
+        max_length=20,
+        blank=True,
+    )
+
+    cv = models.FileField(_('CV'), null=True, upload_to=get_path_to_save_cv)
     phone = models.CharField(
         _('Telephone number'),
         max_length=13,
         help_text=_(f"Обязательное поле. Длина должна быть не более 13 символов!"),
     )
 
+    birthday = models.DateField(
+        _('Birthday'),
+    )
+
+    degree = models.CharField(
+        _('Academic degree level'),
+        max_length=15,
+        choices=DEGREE,
+    )
+
     linkedin = models.CharField(
         _('Linkedin profile'),
-        max_length=70,
-        help_text=_(f"Обязательное поле. Длина должна быть не более 70 символов!"),
+        max_length=50,
+        help_text=_(f"Обязательное поле. Длина должна быть не более 50 символов!"),
+    )
+
+    telegram = models.CharField(
+        _('Telegram profile'),
+        max_length=50,
+        help_text=_(f"Обязательное поле. Длина должна быть не более 50 символов!"),
     )
 
     github = models.CharField(
@@ -268,6 +305,10 @@ class Person(models.Model):
 
     skills = models.ManyToManyField(Skills, blank=True, related_name='all_skills')
     languages = models.ManyToManyField(Languages, blank=True)
+
+    about_user = models.TextField(_('Information about yourself'), blank=True, null=True)
+
+    information_to_resume = models.TextField(_('Some information to resume'), blank=True, null=True)
 
     work_experience = models.ManyToManyField(ExperiencePeriod, blank=True)
 

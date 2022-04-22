@@ -1,8 +1,19 @@
 from django.contrib import admin
 
-from .models import Person, Education, Experience, Languages, StudyPlaces, Cities, Companies, Countries, Skills, \
-    Positions, EducationPeriod, ExperiencePeriod
-
+from .models import (
+    Person,
+    Education,
+    Experience,
+    Languages,
+    StudyPlaces,
+    Cities,
+    Companies,
+    Countries,
+    Skills,
+    Positions,
+    EducationPeriod,
+    ExperiencePeriod,
+)
 
 # Register your models here.
 
