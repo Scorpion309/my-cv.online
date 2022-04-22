@@ -1,0 +1,11 @@
+setup:
+  addons:
+    - plan: ec2-52-18-116-67.eu-west-1.compute.amazonaws.com
+      as: d5hdct3l8st0bc
+
+build:
+  docker:
+    web: my_cv/Dockerfile
+
+run:
+  web: gunicorn my_cv.wsgi:application

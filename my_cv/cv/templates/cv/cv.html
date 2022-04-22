@@ -6,7 +6,7 @@
 
     <div class="d-flex flex-column">
         <div class="profile" align="center">
-            <img src="{{ user.photo.url }}" alt="{{ user.user_name }}'s photo" class="img-fluid rounded-circle">
+            <img src="{{ my_photo }}" alt="{{ user.user_name }}'s photo" class="img-fluid rounded-circle">
             <h2 class="text-light"><a href="{{ user.user_name }}">{{ user.first_name }} {{ user.last_name }}</a></h2>
             <h3 class="text-light">{{ user.general_skill }} {{ user.position }}</h3>
             <div class="social-links mt-3 text-center">
@@ -68,7 +68,7 @@
 
             <div class="row">
                 <div class="col-lg-4 aos-init aos-animate" data-aos="fade-right">
-                    <img src="{{ user.photo.url }}" class="rounded" alt="">
+                    <img src="{{ my_photo }}" class="rounded" alt="">
                 </div>
 
                 <div class="col-lg-8 pt-4 pt-lg-0 content aos-init aos-animate" data-aos="fade-left">
@@ -124,7 +124,7 @@
 
                                 <li>
                                     <i class="bi bi-chevron-right"></i>
-                                    <strong>CV:</strong> <span> <a href="{{ user.cv.url }}">download</a> </span>
+                                    <strong>CV:</strong> <span> <a href="{{ cv }}">download</a> </span>
                                 </li>
                             </ul>
                         </div>
@@ -270,14 +270,14 @@
                              <i class="bi-github"></i>
                              <h4>GitHub:</h4>
                              <p>
-                                 <a href="{{ user.telegram }}">{{ user.github }}</a>
+                                 <a href="{{ user.github }}">{{ user.github }}</a>
                              </p>
                          </div>
                          <div class="address">
                              <i class="bi-linkedin"></i>
                              <h4>Linkedin:</h4>
                              <p>
-                                 <a href="{{ user.telegram }}">{{ user.linkedin }}</a>
+                                 <a href="{{ user.linkedin }}">{{ user.linkedin }}</a>
                              </p>
                          </div>
                      </div>

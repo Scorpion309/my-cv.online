@@ -5,6 +5,7 @@ from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect, reverse
 
 from .models import Person, ExperiencePeriod, EducationPeriod
+from django.conf import settings
 
 
 # Create your views here.
@@ -29,6 +30,8 @@ def get_cv(request, username):
     if user:
         return render(request, "cv/cv.html", {
             'user': user,
+            'my_photo': f'{settings.STATIC_URL}cv/I_am.jpeg',
+            'cv': f'{settings.STATIC_URL}cv/my_cv.docx',
             'skills': skills,
             'languages': languages,
             'work_experience': work_experience,
