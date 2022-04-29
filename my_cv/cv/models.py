@@ -1,3 +1,4 @@
+import datetime
 import os
 import uuid
 
@@ -99,9 +100,9 @@ class Companies(models.Model):
 class Countries(models.Model):
     country_name = models.CharField(
         _('Country'),
-        max_length=32,
+        max_length=16,
         unique=True,
-        help_text=_("Обязательное поле. Длина должна быть не более 32 символов!"),
+        help_text=_("Обязательное поле. Длина должна быть не более 16 символов!"),
         error_messages={"unique": _("Такая страна уже сужествует в базе данных!")},
     )
 
@@ -116,9 +117,9 @@ class Countries(models.Model):
 class Cities(models.Model):
     city_name = models.CharField(
         _('City'),
-        max_length=32,
+        max_length=16,
         unique=True,
-        help_text=_("Обязательное поле. Длина должна быть не более 32 символов!"),
+        help_text=_("Обязательное поле. Длина должна быть не более 16 символов!"),
         error_messages={"unique": _("Такой город уже сужествует в базе данных!")},
     )
     country = models.ForeignKey(Countries, on_delete=models.CASCADE)
@@ -223,31 +224,11 @@ class Person(models.Model):
         extension = filename.split('.')[-1]
         return os.path.join(f'{MEDIA_ROOT}cv/documents/'.lstrip('/'), f'{uuid.uuid4()}.{extension}')
 
-    first_name = models.CharField(
-        _('First name'),
-        max_length=50,
-        help_text=_(f"Обязательное поле. Длина должна быть не более 50 символов!"),
-    )
+    username = models.OneToOneField('auth.User', on_delete=models.CASCADE)
 
-    last_name = models.CharField(
-        _('Last name'),
-        max_length=50,
-        help_text=_(f"Обязательное поле. Длина должна быть не более 50 символов!"),
-    )
-
-    user_name = models.CharField(
-        _('Login'),
-        max_length=50,
-        unique=True,
-        help_text=_(f"Обязательное поле. Длина должна быть не более 50 символов!"),
-        error_messages={"unique": _("Пользователь с таким логином уже существует в нашем списке пользователей."
-                                    " Пожалуйста, выберите другое имя!")},
-    )
-
-    photo = models.ImageField(_('Photo'), null=True, upload_to=get_path_to_save_photo)
-    country = models.ForeignKey(Countries, null=True, on_delete=models.SET_NULL)
-    city = models.ForeignKey(Cities, null=True, on_delete=models.SET_NULL)
-    email = models.EmailField(_('E-mail'))
+    photo = models.ImageField(_('Photo'), null=True, blank=True, upload_to=get_path_to_save_photo)
+    country = models.ForeignKey(Countries, null=True, blank=True, on_delete=models.SET_NULL)
+    city = models.ForeignKey(Cities, null=True, blank=True, on_delete=models.SET_NULL)
 
     website = models.CharField(
         _('Website'),
@@ -255,43 +236,51 @@ class Person(models.Model):
         blank=True,
     )
 
-    cv = models.FileField(_('CV'), null=True, upload_to=get_path_to_save_cv)
+    cv = models.FileField(_('CV'), null=True, blank=True, upload_to=get_path_to_save_cv)
     phone = models.CharField(
         _('Telephone number'),
+        blank=True,
         max_length=13,
         help_text=_(f"Обязательное поле. Длина должна быть не более 13 символов!"),
     )
 
     birthday = models.DateField(
         _('Birthday'),
+        blank=True,
+        default=datetime.date.today(),
     )
 
     degree = models.CharField(
         _('Academic degree level'),
         max_length=15,
+        blank=True,
         choices=DEGREE,
     )
 
     linkedin = models.CharField(
         _('Linkedin profile'),
         max_length=50,
+        blank=True,
         help_text=_(f"Обязательное поле. Длина должна быть не более 50 символов!"),
     )
 
     telegram = models.CharField(
         _('Telegram profile'),
         max_length=50,
+        blank=True,
         help_text=_(f"Обязательное поле. Длина должна быть не более 50 символов!"),
     )
 
     github = models.CharField(
         _('Github profile'),
         max_length=50,
+        blank=True,
         help_text=_(f"Обязательное поле. Длина должна быть не более 50 символов!"),
     )
 
     filing_date = models.DateField(
-        _('Filing date'),
+        default=datetime.date.today(),
+        editable=False,
     )
 
     position = models.ForeignKey(Positions, blank=True, null=True, on_delete=models.SET_NULL)
@@ -300,6 +289,7 @@ class Person(models.Model):
     salary = models.IntegerField(
         _('Salary'),
         default=0,
+        blank=True,
         validators=[MinValueValidator(0)],
     )
 
@@ -317,6 +307,3 @@ class Person(models.Model):
     class Meta:
         verbose_name = _('Person')
         verbose_name_plural = _('Persons')
-
-    def __str__(self):
-        return self.user_name

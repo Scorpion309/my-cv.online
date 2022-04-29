@@ -4,6 +4,8 @@ __pycache__/
 my_cv/.env
 my_cv/db.sqlite3
 my_cv/cv/migrations/0*.py
+my_cv/cv/media/*
+
 
 my_cv/my_cv/settings.py
 my_cv/photos/*
