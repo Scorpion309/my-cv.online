@@ -19,7 +19,7 @@ from .models import (
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ('user_name', 'first_name', 'last_name', 'general_skill', 'position', 'country', 'city', 'email')
+    list_display = ('username', 'general_skill', 'position', 'country', 'city')
     filter_horizontal = ('languages', 'work_experience', 'education', 'skills')
 
 
