@@ -30,6 +30,7 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(" ")
 # Application definition
 
 INSTALLED_APPS = [
+    'users',
     'cv',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -132,6 +133,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGIN_URL = '/users/login/'
+LOGOUT_URL = '/users/logout/'
+LOGIN_REDIRECT_URL = '/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

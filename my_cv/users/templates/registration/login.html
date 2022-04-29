@@ -1,0 +1,22 @@
+{% extends "registration/layout.html" %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+
+    <h2>User login:</h2>
+    {% if form.errors %}
+        Bad credentials
+    {% endif %}
+    <form action="{% url 'users:login' %}" method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <input type="submit" value="Login">
+    </form>
+    <p>
+        <a href="{% url 'users:password_reset' %}">Forgot password?</a>
+    </p>
+
+
+{% endblock %}

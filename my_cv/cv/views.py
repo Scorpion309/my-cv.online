@@ -1,24 +1,25 @@
 import datetime
 
+from django.conf import settings
 from django.db.models import Prefetch
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect, reverse
 
 from .models import Person, ExperiencePeriod, EducationPeriod
-from django.conf import settings
 
 
 # Create your views here.
 
 def index(request):
-    return redirect(reverse("get_my_cv", args=("Scorpion",)))
+    return redirect(reverse("cv:get_my_cv", args=("Scorpion",)))
 
 
 def get_cv(request, username):
     user = Person.objects.prefetch_related(
         'skills',
         'languages',
-        Prefetch('work_experience', queryset=ExperiencePeriod.objects.select_related('experience').all().order_by('-start_work_date')),
+        Prefetch('work_experience',
+                 queryset=ExperiencePeriod.objects.select_related('experience').all().order_by('-start_work_date')),
         Prefetch('education', queryset=EducationPeriod.objects.all().order_by('-start_study_date'))
     ).get(user_name=username)
 
