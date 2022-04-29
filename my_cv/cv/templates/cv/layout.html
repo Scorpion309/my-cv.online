@@ -20,6 +20,17 @@
     <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
 
     <header id="header">
+        <center>
+        {% if request.user.is_authenticated %}
+            Hi, {{ request.user.username }}
+            <a href="{% url 'users:logout' %}">logout</a>
+        {% else %}
+            <a href="{% url 'users:login' %}">Login, </a>
+            <a href="{% url 'users:signup' %}">Register</a>
+        {% endif %}
+        </center>
+
+
         {% block header %}
         {% endblock %}
     </header>

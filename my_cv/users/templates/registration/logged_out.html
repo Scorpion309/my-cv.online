@@ -1,0 +1,8 @@
+{% extends "registration/layout.html" %}
+
+{% block title %} Logout {% endblock %}
+
+{% block content %}
+    You have been logged out. You can login again:
+    <a href="{% url 'users:login' %}">Login</a>
+{% endblock %}
