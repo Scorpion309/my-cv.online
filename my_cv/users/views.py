@@ -2,13 +2,21 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, reverse, redirect
+from django.urls import reverse_lazy
+from django.contrib.auth.forms import UserCreationForm
+from django.views.generic.edit import CreateView
 
-from .forms import LoginForm
 
 
 def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
+
+
+class SignUp(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy("users:login")
+    template_name = "registration/signup.html"
 
 
 # def login_view(request):

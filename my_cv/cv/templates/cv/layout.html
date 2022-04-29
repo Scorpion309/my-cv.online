@@ -25,7 +25,8 @@
             Hi, {{ request.user.username }}
             <a href="{% url 'users:logout' %}">logout</a>
         {% else %}
-            <a href="{% url 'users:login' %}">login</a>
+            <a href="{% url 'users:login' %}">Login, </a>
+            <a href="{% url 'users:signup' %}">Register</a>
         {% endif %}
         </center>
 

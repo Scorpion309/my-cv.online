@@ -1,0 +1,16 @@
+{% extends "registration/layout.html" %}
+
+{% block title %} Register {% endblock %}
+
+{% block content %}
+<h2>Register</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Register">
+</form>
+
+<a href="{% url 'users:login' %}">Back to login</a>
+<a href="{% url 'cv:index' %}">Back to Home</a>
+{% endblock %}
